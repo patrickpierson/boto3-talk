@@ -1,18 +1,14 @@
-import boto3, time, StringIO
+import boto3, time, os
 from SimpleCV import Image, Camera
 
-loop = True
+time_now = int(time.time())
+filename = '%s.jpg' % time_now
+cam = Camera()
+img = cam.getImage()
+img.save(filename)
 
-while loop == True:
-  user_input = raw_input('Take a picture by typing "cheese" or exit by typing "exit": ')
-  
-  if user_input == 'cheese':
-    output = StringIO.StringIO()
-    time_now = int(time.time())
-    cam = Camera()
-    img = cam.getImage()
-    img.save(output.write())
-    print output
+s3 = boto3.resource('s3')
+response = s3.Object('python-frederick-demo', filename).put(Body=open(filename, 'rb'))
+print response
 
-  if user_input == 'exit':
-    break
+os.remove(filename)
