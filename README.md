@@ -1,5 +1,7 @@
 # boto3-talk
 
+>Slides - https://goo.gl/2Hw9MK
+
 ```
 cd sqs
 python create_queue.py
